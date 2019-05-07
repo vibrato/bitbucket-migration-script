@@ -19,19 +19,19 @@ while read line
 do
         repo=$line
         echo "###"
-        echo "Processing $repo"
+        echo "Processing ${rep}"
         git clone --bare ssh://${bsUser}@${bsServer}:${bsSSHPort}/${bsProjectKey}/${repo}.git ./${repo}
         cd $repo
         echo "Creating repo in Bitbucket"
-        curl -X POST -v -u "$bcUser:$bcPass" "https://api.bitbucket.org/2.0/repositories/$owner/$repo" \
+        curl -X POST -v -u "${bcUser}:${bcPass}" "https://api.bitbucket.org/2.0/repositories/${owner}/${repo}" \
                      -H "Content-Type: application/json" \
                      -d '{"has_wiki": true, "is_private": true, "project": {"key": '\"${bcProjectKey}\"'}}'
         echo "Pushing mirror to bitbucket"
         echo "git@bitbucket.org:${owner}/${repo}.git"
         git push --mirror git@bitbucket.org:${owner}/${repo}.git
         cd ..
-        echo "Removing $repo.git"
-        rm -rf "$repo"
+        echo "Removing ${repo}.git"
+        rm -rf "${repo}"
         echo "Waiting 5 seconds"
         echo "###"
         sleep 5;
