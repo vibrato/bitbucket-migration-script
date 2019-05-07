@@ -1,7 +1,7 @@
 #!/bin/bash
 # Author:RayNg@Vibrato
 
-# Usage: ./bitbucket-migrate.sh repos.txt
+# Usage: ./bitbucket-migration-script.sh repos.txt
 #
 # repos.txt should have one repository per line.
 

@@ -7,7 +7,7 @@
 2. Have all the repository names that you want to migrate in repo.txt
 
 ### Usage
-./bitbucket-migrate.sh repos.txt
+./bitbucket-migration-script.sh repos.txt
 
 ### Output
 This script will git clone all the repositories from the list in repo.txt and push it (including all the branches and history) to the new repository in Bitbucket Cloud one by one after creating the repository using the Bitbucket Cloud RESTful Api
