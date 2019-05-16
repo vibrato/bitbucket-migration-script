@@ -27,15 +27,16 @@ do
         curl -X POST -v -u "${bcUser}:${bcPass}" "https://api.bitbucket.org/2.0/repositories/${owner}/${repo}" \
                      -H "Content-Type: application/json" \
                      -d '{"has_wiki": true, "is_private": true, "project": {"key": '\"${bcProjectKey}\"'}}'
+                     
         ## Setup branch permission
         curl -X POST -v -u "${bcUser}:${bcPass}" "https://api.bitbucket.org/2.0/repositories/${owner}/${repo}/branch-restrictions" \
-             -H "Content-Type: application/json" \
-             -d ' {
-                     "pattern": "master",
-                     "kind": "require_approvals_to_merge",
-                     "value" : 1
-                  }
-                '
+                     -H "Content-Type: application/json" \
+                     -d ' {
+                             "pattern": "master",
+                             "kind": "require_approvals_to_merge",
+                             "value" : 1
+                          }
+                        '
 
         curl -X POST -v -u "${bcUser}:${bcPass}" "https://api.bitbucket.org/2.0/repositories/${owner}/${repo}/branch-restrictions" \
                      -H "Content-Type: application/json" \
