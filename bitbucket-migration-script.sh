@@ -27,7 +27,7 @@ do
         curl -X POST -v -u "${bcUser}:${bcPass}" "https://api.bitbucket.org/2.0/repositories/${owner}/${repo}" \
                      -H "Content-Type: application/json" \
                      -d '{"has_wiki": true, "is_private": true, "project": {"key": '\"${bcProjectKey}\"'}}'
-                     
+
         ## Setup branch permission
         curl -X POST -v -u "${bcUser}:${bcPass}" "https://api.bitbucket.org/2.0/repositories/${owner}/${repo}/branch-restrictions" \
                      -H "Content-Type: application/json" \
@@ -56,16 +56,16 @@ do
                         '
         ## Setup webhook
         curl -X POST -v -u "${bcUser}:${bcPass}" "https://api.bitbucket.org/2.0/repositories/${owner}/${repo}/hooks" \
-             -H "Content-Type: application/json" \
-             -d ' {
-                     "description": "On prem Jenkins Webhook",
-                     "url": "http://example.com/bitbucket-hook/",
-                     "active": true,
-                     "events": [
-                       "repo:push",
-                       "pullrequest:created"
-                     ]
-                  }'
+                     -H "Content-Type: application/json" \
+                     -d ' {
+                             "description": "On prem Jenkins Webhook",
+                             "url": "http://example.com/bitbucket-hook/",
+                             "active": true,
+                             "events": [
+                               "repo:push",
+                               "pullrequest:created"
+                             ]
+                          }'
 
         echo "Pushing mirror to bitbucket"
         echo "git@bitbucket.org:${owner}/${repo}.git"
