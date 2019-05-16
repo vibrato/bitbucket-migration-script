@@ -23,9 +23,49 @@ do
         git clone --bare ssh://${bsUser}@${bsServer}:${bsSSHPort}/${bsProjectKey}/${repo}.git ./${repo}
         cd $repo
         echo "Creating repo in Bitbucket"
+        ## create repository
         curl -X POST -v -u "${bcUser}:${bcPass}" "https://api.bitbucket.org/2.0/repositories/${owner}/${repo}" \
                      -H "Content-Type: application/json" \
                      -d '{"has_wiki": true, "is_private": true, "project": {"key": '\"${bcProjectKey}\"'}}'
+        ## Setup branch permission
+        curl -X POST -v -u "${bcUser}:${bcPass}" "https://api.bitbucket.org/2.0/repositories/${owner}/${repo}/branch-restrictions" \
+             -H "Content-Type: application/json" \
+             -d ' {
+                     "pattern": "master",
+                     "kind": "require_approvals_to_merge",
+                     "value" : 1
+                  }
+                '
+
+        curl -X POST -v -u "${bcUser}:${bcPass}" "https://api.bitbucket.org/2.0/repositories/${owner}/${repo}/branch-restrictions" \
+                     -H "Content-Type: application/json" \
+                     -d ' {
+                             "pattern": "master",
+                             "kind": "require_passing_builds_to_merge",
+                             "value" : 1
+                          }
+                        '
+
+        curl -X POST -v -u "${bcUser}:${bcPass}" "https://api.bitbucket.org/2.0/repositories/${owner}/${repo}/branch-restrictions" \
+                     -H "Content-Type: application/json" \
+                     -d ' {
+                             "pattern": "master",
+                             "kind": "push"
+                          }
+                        '
+        ## Setup webhook
+        curl -X POST -v -u "${bcUser}:${bcPass}" "https://api.bitbucket.org/2.0/repositories/${owner}/${repo}/hooks" \
+             -H "Content-Type: application/json" \
+             -d ' {
+                     "description": "On prem Jenkins Webhook",
+                     "url": "http://example.com/bitbucket-hook/",
+                     "active": true,
+                     "events": [
+                       "repo:push",
+                       "pullrequest:created"
+                     ]
+                  }'
+
         echo "Pushing mirror to bitbucket"
         echo "git@bitbucket.org:${owner}/${repo}.git"
         git push --mirror git@bitbucket.org:${owner}/${repo}.git

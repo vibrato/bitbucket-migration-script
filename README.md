@@ -17,3 +17,6 @@ This script will git clone all the repositories from the list in repo.txt and pu
 2. create a new repo (using the same name) in Bitbucket Cloud using RESTful api
 3. git push to the new repo in Bitbucket Cloud
 4. Clean up the directory
+
+### API reference
+https://developer.atlassian.com/bitbucket/api/2/reference/search?q=repositories
